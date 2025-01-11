@@ -1,7 +1,7 @@
 <html>
 <head>
   <base href="/" />
-  <title>Hamster Party 3D!</title>
+  <title>Multiplayer Hamster Party 3D!</title>
   <link rel="stylesheet" href="styles.css">
   <!-- Import Three.js from CDN as a module -->
   <script type="importmap">
@@ -15,7 +15,7 @@
 <body>
 
 <div id="startScreen">
-  <h1 class="title">Hamster Party 3D!</h1>
+  <h1 class="title">Multiplayer Hamster Party 3D!</h1>
   <button id="startButton">Start Game!</button>
 </div>
 
@@ -72,8 +72,11 @@
       <label><input type="checkbox" id="hasHat"> Hat</label>
     </div>
     <button id="spawnHamster">Add Hamster!</button>
+    <button id="updateHamster" style="display: none;">Update Hamster</button>
   </div>
 </div>
+
+<div id="handCursor"></div>
 
 <script type="module" src="main.js"></script>
 

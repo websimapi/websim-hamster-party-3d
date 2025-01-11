@@ -154,3 +154,39 @@ select {
 #spawnHamster:hover {
   background: #FF1493;
 }
+
+#handCursor {
+  position: fixed;
+  width: 64px;
+  height: 64px;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white' stroke='black' stroke-width='1'%3E%3Cpath d='M9 11V7.5a1.5 1.5 0 013 0V11h1V3.5a1.5 1.5 0 013 0V11h1V5.5a1.5 1.5 0 013 0V11h1V7.5a1.5 1.5 0 013 0V14l-1 7H8l-1-7v-3h2z'/%3E%3C/path%3E%3C/svg%3E");
+  background-size: contain;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  display: none;
+}
+
+.is-grabbing #handCursor {
+  transform: translate(-50%, -50%) scale(0.8);
+}
+
+.is-grabbing {
+  cursor: none !important;
+}
+
+#updateHamster {
+  width: 100%;
+  padding: 10px;
+  background: #4CAF50;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background 0.3s;
+}
+
+#updateHamster:hover {
+  background: #45a049;
+}
