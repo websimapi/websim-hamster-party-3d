@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 export class HamsterPreview {
   constructor(containerId) {
     this.container = document.getElementById(containerId);

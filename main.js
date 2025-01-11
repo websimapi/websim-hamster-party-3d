@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import { createHamster } from './hamster.js';
 import { HamsterPreview } from './preview.js';
 
