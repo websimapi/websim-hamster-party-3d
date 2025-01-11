@@ -1,14 +1,82 @@
+<html>
 <head>
   <base href="/" />
   <title>Hamster Party 3D!</title>
   <link rel="stylesheet" href="styles.css">
+  <!-- Import Three.js from CDN as a module -->
   <script type="importmap">
     {
       "imports": {
-        "three": "https://unpkg.com/three@0.157.0/build/three.module.js",
-        "./hamster.js": "/hamster.js",
-        "./preview.js": "/preview.js"
+        "three": "https://unpkg.com/three@0.157.0/build/three.module.js"
       }
     }
   </script>
-</head><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div id="startScreen">
+  <h1 class="title">Hamster Party 3D!</h1>
+  <button id="startButton">Start Game!</button>
+</div>
+
+<div id="customizePanel">
+  <div id="previewContainer">
+    <div id="preview3D"></div>
+    <div class="preview-controls">
+      <button id="rotateLeft">⟲</button>
+      <button id="rotateRight">⟳</button>
+    </div>
+  </div>
+  <div class="customize-controls">
+    <h3>Customize Your Hamster</h3>
+    <div class="color-picker">
+      <label>Fur Color:</label>
+      <input type="color" id="furColor" value="#B87A3D">
+    </div>
+    <div class="color-picker">
+      <label>Fur Pattern:</label>
+      <select id="furPattern">
+        <option value="solid">Solid</option>
+        <option value="striped">Striped</option>
+        <option value="spotted">Spotted</option>
+      </select>
+    </div>
+    <div class="color-picker">
+      <label>Ear Color:</label>
+      <input type="color" id="earColor" value="#A06030">
+    </div>
+    <div class="color-picker">
+      <label>Eye Color:</label>
+      <input type="color" id="eyeColor" value="#000000">
+    </div>
+    <div class="slider-control">
+      <label>Size:</label>
+      <input type="range" id="hamsterSize" min="0.6" max="1.4" step="0.1" value="1">
+    </div>
+    <div class="slider-control">
+      <label>Ear Size:</label>
+      <input type="range" id="earSize" min="0.6" max="1.4" step="0.1" value="1">
+    </div>
+    <div class="slider-control">
+      <label>Tail Length:</label>
+      <input type="range" id="tailLength" min="0.2" max="1.0" step="0.1" value="0.5">
+    </div>
+    <div class="slider-control">
+      <label>Leg Length:</label>
+      <input type="range" id="legLength" min="0.2" max="1.0" step="0.1" value="0.5">
+    </div>
+    <div class="checkbox-control">
+      <label><input type="checkbox" id="hasGlasses"> Glasses</label>
+    </div>
+    <div class="checkbox-control">
+      <label><input type="checkbox" id="hasHat"> Hat</label>
+    </div>
+    <button id="spawnHamster">Add Hamster!</button>
+  </div>
+</div>
+
+<script type="module" src="main.js"></script>
+
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

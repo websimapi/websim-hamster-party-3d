@@ -12,28 +12,67 @@ function init() {
   camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x87CEEB); // Sky blue background
   document.body.appendChild(renderer.domElement);
 
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+  // Enhanced lighting setup
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
   scene.add(ambientLight);
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-  directionalLight.position.set(0, 10, 5);
-  scene.add(directionalLight);
+  
+  const mainLight = new THREE.DirectionalLight(0xffffff, 1);
+  mainLight.position.set(5, 10, 5);
+  mainLight.castShadow = true;
+  scene.add(mainLight);
 
-  const floorGeometry = new THREE.PlaneGeometry(20, 20);
+  const fillLight = new THREE.DirectionalLight(0xffffff, 0.4);
+  fillLight.position.set(-5, 8, -5);
+  scene.add(fillLight);
+
+  const backLight = new THREE.DirectionalLight(0xffffff, 0.3);
+  backLight.position.set(0, 5, -10);
+  scene.add(backLight);
+
+  // Improved ground plane
+  const floorGeometry = new THREE.PlaneGeometry(20, 20, 50, 50);
   const floorMaterial = new THREE.MeshStandardMaterial({
     color: 0x90EE90,
-    roughness: 0.8
+    roughness: 0.8,
+    metalness: 0.2
   });
   const floor = new THREE.Mesh(floorGeometry, floorMaterial);
   floor.rotation.x = -Math.PI / 2;
+  floor.receiveShadow = true;
   scene.add(floor);
 
-  camera.position.set(0, 5, 10);
+  // Add some environmental elements
+  addEnvironmentElements();
+
+  camera.position.set(0, 8, 12);
   camera.lookAt(0, 0, 0);
 
   preview = new HamsterPreview('preview3D');
+  // Initialize preview with default hamster
+  preview.updateHamster({});
+  
   animate();
+}
+
+function addEnvironmentElements() {
+  // Add some decorative grass patches
+  for (let i = 0; i < 50; i++) {
+    const grassGeometry = new THREE.ConeGeometry(0.1, 0.3, 4);
+    const grassMaterial = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(0x228B22).multiplyScalar(0.8 + Math.random() * 0.4)
+    });
+    const grass = new THREE.Mesh(grassGeometry, grassMaterial);
+    grass.position.set(
+      (Math.random() - 0.5) * 18,
+      0.15,
+      (Math.random() - 0.5) * 18
+    );
+    grass.rotation.y = Math.random() * Math.PI;
+    scene.add(grass);
+  }
 }
 
 function checkCollisions() {
