@@ -1,0 +1,142 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Arial', sans-serif;
+}
+
+#startScreen {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, #FFB6C1, #FFA07A);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.title {
+  font-size: 4em;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  margin-bottom: 30px;
+}
+
+#startButton {
+  padding: 15px 40px;
+  font-size: 1.5em;
+  background: #FF69B4;
+  border: none;
+  border-radius: 25px;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+#startButton:hover {
+  transform: scale(1.1);
+}
+
+#customizePanel {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  background: rgba(255,255,255,0.9);
+  padding: 20px;
+  border-radius: 10px;
+  display: none;
+  width: 300px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+#previewContainer {
+  width: 100%;
+  height: 300px;
+  position: relative;
+  margin-bottom: 20px;
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+
+#preview3D {
+  width: 100%;
+  height: 100%;
+}
+
+.preview-controls {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+
+.preview-controls button {
+  padding: 5px 15px;
+  font-size: 1.2em;
+  background: rgba(255,255,255,0.8);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.customize-controls {
+  padding-top: 10px;
+}
+
+.color-picker {
+  margin: 15px 0;
+}
+
+.slider-control {
+  margin: 15px 0;
+}
+
+.checkbox-control {
+  margin: 15px 0;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #444;
+  font-weight: bold;
+}
+
+input[type="range"] {
+  width: 100%;
+}
+
+input[type="color"] {
+  width: 50px;
+  height: 30px;
+  border: none;
+  border-radius: 5px;
+}
+
+select {
+  width: 100%;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+#spawnHamster {
+  width: 100%;
+  padding: 10px;
+  background: #FF69B4;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background 0.3s;
+}
+
+#spawnHamster:hover {
+  background: #FF1493;
+}

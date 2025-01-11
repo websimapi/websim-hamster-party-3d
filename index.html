@@ -2,114 +2,7 @@
 <head>
 <base href="/" />
 <title>Hamster Party 3D!</title>
-<style>
-  body {
-    margin: 0;
-    overflow: hidden;
-    font-family: 'Arial', sans-serif;
-  }
-  
-  #startScreen {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg, #FFB6C1, #FFA07A);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-  }
-
-  .title {
-    font-size: 4em;
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    margin-bottom: 30px;
-  }
-
-  #startButton {
-    padding: 15px 40px;
-    font-size: 1.5em;
-    background: #FF69B4;
-    border: none;
-    border-radius: 25px;
-    color: white;
-    cursor: pointer;
-    transition: transform 0.2s;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  }
-
-  #startButton:hover {
-    transform: scale(1.1);
-  }
-
-  #customizePanel {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    background: rgba(255,255,255,0.9);
-    padding: 20px;
-    border-radius: 10px;
-    display: none;
-    min-width: 250px;
-    max-height: 80vh;
-    overflow-y: auto;
-  }
-
-  .color-picker {
-    margin: 15px 0;
-  }
-
-  .slider-control {
-    margin: 15px 0;
-  }
-
-  .checkbox-control {
-    margin: 15px 0;
-  }
-
-  label {
-    display: block;
-    margin-bottom: 5px;
-    color: #444;
-    font-weight: bold;
-  }
-
-  input[type="range"] {
-    width: 100%;
-  }
-
-  input[type="color"] {
-    width: 50px;
-    height: 30px;
-    border: none;
-    border-radius: 5px;
-  }
-
-  select {
-    width: 100%;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-
-  #spawnHamster {
-    width: 100%;
-    padding: 10px;
-    background: #FF69B4;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    cursor: pointer;
-    margin-top: 15px;
-    transition: background 0.3s;
-  }
-
-  #spawnHamster:hover {
-    background: #FF1493;
-  }
-</style>
+<link rel="stylesheet" href="styles.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
@@ -120,329 +13,64 @@
 </div>
 
 <div id="customizePanel">
-  <h3>Customize Your Hamster</h3>
-  <div class="color-picker">
-    <label>Fur Color:</label>
-    <input type="color" id="furColor" value="#B87A3D">
+  <div id="previewContainer">
+    <div id="preview3D"></div>
+    <div class="preview-controls">
+      <button id="rotateLeft">⟲</button>
+      <button id="rotateRight">⟳</button>
+    </div>
   </div>
-  <div class="color-picker">
-    <label>Fur Pattern:</label>
-    <select id="furPattern">
-      <option value="solid">Solid</option>
-      <option value="striped">Striped</option>
-      <option value="spotted">Spotted</option>
-    </select>
+  <div class="customize-controls">
+    <h3>Customize Your Hamster</h3>
+    <div class="color-picker">
+      <label>Fur Color:</label>
+      <input type="color" id="furColor" value="#B87A3D">
+    </div>
+    <div class="color-picker">
+      <label>Fur Pattern:</label>
+      <select id="furPattern">
+        <option value="solid">Solid</option>
+        <option value="striped">Striped</option>
+        <option value="spotted">Spotted</option>
+      </select>
+    </div>
+    <div class="color-picker">
+      <label>Ear Color:</label>
+      <input type="color" id="earColor" value="#A06030">
+    </div>
+    <div class="color-picker">
+      <label>Eye Color:</label>
+      <input type="color" id="eyeColor" value="#000000">
+    </div>
+    <div class="slider-control">
+      <label>Size:</label>
+      <input type="range" id="hamsterSize" min="0.6" max="1.4" step="0.1" value="1">
+    </div>
+    <div class="slider-control">
+      <label>Ear Size:</label>
+      <input type="range" id="earSize" min="0.6" max="1.4" step="0.1" value="1">
+    </div>
+    <div class="slider-control">
+      <label>Tail Length:</label>
+      <input type="range" id="tailLength" min="0.2" max="1.0" step="0.1" value="0.5">
+    </div>
+    <div class="slider-control">
+      <label>Leg Length:</label>
+      <input type="range" id="legLength" min="0.2" max="1.0" step="0.1" value="0.5">
+    </div>
+    <div class="checkbox-control">
+      <label><input type="checkbox" id="hasGlasses"> Glasses</label>
+    </div>
+    <div class="checkbox-control">
+      <label><input type="checkbox" id="hasHat"> Hat</label>
+    </div>
+    <button id="spawnHamster">Add Hamster!</button>
   </div>
-  <div class="color-picker">
-    <label>Ear Color:</label>
-    <input type="color" id="earColor" value="#A06030">
-  </div>
-  <div class="color-picker">
-    <label>Eye Color:</label>
-    <input type="color" id="eyeColor" value="#000000">
-  </div>
-  <div class="slider-control">
-    <label>Size:</label>
-    <input type="range" id="hamsterSize" min="0.6" max="1.4" step="0.1" value="1">
-  </div>
-  <div class="slider-control">
-    <label>Ear Size:</label>
-    <input type="range" id="earSize" min="0.6" max="1.4" step="0.1" value="1">
-  </div>
-  <div class="slider-control">
-    <label>Tail Length:</label>
-    <input type="range" id="tailLength" min="0.2" max="1.0" step="0.1" value="0.5">
-  </div>
-  <div class="slider-control">
-    <label>Leg Length:</label>
-    <input type="range" id="legLength" min="0.2" max="1.0" step="0.1" value="0.5">
-  </div>
-  <div class="checkbox-control">
-    <label><input type="checkbox" id="hasGlasses"> Glasses</label>
-  </div>
-  <div class="checkbox-control">
-    <label><input type="checkbox" id="hasHat"> Hat</label>
-  </div>
-  <button id="spawnHamster">Add Hamster!</button>
 </div>
 
-<script type="module">
-  let scene, camera, renderer, hamsters = [];
-  let bgMusic = new Audio('Pixelated Echoes of the Past - Track 2 - Sonauto.wav');
-  bgMusic.loop = true;
-
-  function init() {
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
-
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambientLight);
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight.position.set(0, 10, 5);
-    scene.add(directionalLight);
-
-    const floorGeometry = new THREE.PlaneGeometry(20, 20);
-    const floorMaterial = new THREE.MeshStandardMaterial({ 
-      color: 0x90EE90,
-      roughness: 0.8
-    });
-    const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-    floor.rotation.x = -Math.PI / 2;
-    scene.add(floor);
-
-    camera.position.set(0, 5, 10);
-    camera.lookAt(0, 0, 0);
-
-    animate();
-  }
-
-  function createHamster(params = {}) {
-    const {
-      furColor = 0xB87A3D, 
-      furPattern = 'solid',
-      earColor = 0xA06030, 
-      eyeColor = 0x000000,
-      size = 1, 
-      earSize = 1,
-      tailLength = 0.5,
-      legLength = 0.5,
-      hasGlasses = false,
-      hasHat = false
-    } = params;
-
-    const hamsterGroup = new THREE.Group();
-    
-    // Body
-    const bodyGeometry = new THREE.SphereGeometry(0.5 * size, 32, 32);
-    const bodyMaterial = new THREE.MeshStandardMaterial({ 
-      color: furColor,
-      roughness: 0.7
-    });
-    // Apply fur pattern
-    if (furPattern !== 'solid') {
-      const canvas = document.createElement('canvas');
-      canvas.width = canvas.height = 256;
-      const ctx = canvas.getContext('2d');
-      ctx.fillStyle = '#' + furColor.getHexString();
-      ctx.fillRect(0, 0, 256, 256);
-      ctx.fillStyle = '#' + furColor.offsetHSL(0, 0, -0.2).getHexString();
-
-      if (furPattern === 'striped') {
-        for (let i = 0; i < 5; i++) {
-          ctx.fillRect(0, i * 50, 256, 25);
-        }
-      } else if (furPattern === 'spotted') {
-        for (let i = 0; i < 50; i++) {
-          ctx.beginPath();
-          ctx.arc(Math.random() * 256, Math.random() * 256, 10 + Math.random() * 10, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-      const texture = new THREE.CanvasTexture(canvas);
-      bodyMaterial.map = texture;
-    }
-    const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
-    hamsterGroup.add(body);
-
-    // Head
-    const headGeometry = new THREE.SphereGeometry(0.3 * size, 32, 32);
-    const head = new THREE.Mesh(headGeometry, bodyMaterial);
-    head.position.set(0.4 * size, 0.2 * size, 0);
-    hamsterGroup.add(head);
-
-    // Ears
-    const earMaterial = new THREE.MeshStandardMaterial({ 
-      color: earColor,
-      roughness: 0.7
-    });
-    const earGeometry = new THREE.CircleGeometry(0.15 * earSize, 32);
-    
-    const leftEar = new THREE.Mesh(earGeometry, earMaterial);
-    leftEar.position.set(0.5 * size, 0.4 * size, 0.15 * size);
-    leftEar.rotation.y = -Math.PI / 4;
-    hamsterGroup.add(leftEar);
-
-    const rightEar = new THREE.Mesh(earGeometry, earMaterial);
-    rightEar.position.set(0.5 * size, 0.4 * size, -0.15 * size);
-    rightEar.rotation.y = Math.PI / 4;
-    hamsterGroup.add(rightEar);
-
-    // Eyes
-    const eyeGeometry = new THREE.SphereGeometry(0.05 * size, 16, 16);
-    const eyeMaterial = new THREE.MeshStandardMaterial({ color: eyeColor });
-    
-    const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-    leftEye.position.set(0.5 * size, 0.3 * size, 0.15 * size);
-    hamsterGroup.add(leftEye);
-
-    const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-    rightEye.position.set(0.5 * size, 0.3 * size, -0.15 * size);
-    hamsterGroup.add(rightEye);
-
-    // Nose
-    const noseGeometry = new THREE.SphereGeometry(0.05 * size, 16, 16);
-    const noseMaterial = new THREE.MeshStandardMaterial({ color: 0xFF69B4 });
-    const nose = new THREE.Mesh(noseGeometry, noseMaterial);
-    nose.position.set(0.6 * size, 0.25 * size, 0);
-    hamsterGroup.add(nose);
-
-    // Whiskers
-    const whiskerMaterial = new THREE.LineBasicMaterial({ color: 0xFFFFFF });
-    for (let i = -1; i <= 1; i++) {
-      const whiskerGeometry = new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector3(0.6 * size, 0.25 * size, 0.05 * i * size),
-        new THREE.Vector3(0.8 * size, 0.25 * size + 0.05 * i, 0.1 * i * size)
-      ]);
-      const whisker = new THREE.Line(whiskerGeometry, whiskerMaterial);
-      hamsterGroup.add(whisker);
-    }
-
-    // Tail
-    const tailGeometry = new THREE.ConeGeometry(0.05 * size, tailLength * size, 16);
-    const tailMaterial = new THREE.MeshStandardMaterial({ color: furColor });
-    const tail = new THREE.Mesh(tailGeometry, tailMaterial);
-    tail.position.set(-0.5 * size, -0.1 * size, 0);
-    tail.rotation.z = Math.PI;
-    hamsterGroup.add(tail);
-
-    // Legs
-    const legGeometry = new THREE.CylinderGeometry(0.05 * size, 0.05 * size, legLength * size, 16);
-    const legMaterial = new THREE.MeshStandardMaterial({ color: furColor });
-
-    const frontLeftLeg = new THREE.Mesh(legGeometry, legMaterial);
-    frontLeftLeg.position.set(0.2 * size, -0.3 * size, 0.2 * size);
-    hamsterGroup.add(frontLeftLeg);
-
-    const frontRightLeg = new THREE.Mesh(legGeometry, legMaterial);
-    frontRightLeg.position.set(0.2 * size, -0.3 * size, -0.2 * size);
-    hamsterGroup.add(frontRightLeg);
-
-    const backLeftLeg = new THREE.Mesh(legGeometry, legMaterial);
-    backLeftLeg.position.set(-0.2 * size, -0.3 * size, 0.2 * size);
-    hamsterGroup.add(backLeftLeg);
-
-    const backRightLeg = new THREE.Mesh(legGeometry, legMaterial);
-    backRightLeg.position.set(-0.2 * size, -0.3 * size, -0.2 * size);
-    hamsterGroup.add(backRightLeg);
-
-    // Accessories
-    if (hasGlasses) {
-      const glassMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
-      const lensGeometry = new THREE.RingGeometry(0.06 * size, 0.08 * size, 16);
-      const leftLens = new THREE.Mesh(lensGeometry, glassMaterial);
-      leftLens.position.set(0.5 * size, 0.3 * size, 0.12 * size);
-      leftLens.rotation.y = Math.PI / 2;
-      hamsterGroup.add(leftLens);
-
-      const rightLens = new THREE.Mesh(lensGeometry, glassMaterial);
-      rightLens.position.set(0.5 * size, 0.3 * size, -0.12 * size);
-      rightLens.rotation.y = Math.PI / 2;
-      hamsterGroup.add(rightLens);
-
-      const bridgeGeometry = new THREE.CylinderGeometry(0.01 * size, 0.01 * size, 0.05 * size, 8);
-      const bridge = new THREE.Mesh(bridgeGeometry, glassMaterial);
-      bridge.position.set(0.5 * size, 0.3 * size, 0);
-      bridge.rotation.z = Math.PI / 2;
-      hamsterGroup.add(bridge);
-    }
-
-    if (hasHat) {
-      const hatMaterial = new THREE.MeshStandardMaterial({ color: 0x0000FF });
-      const brimGeometry = new THREE.CylinderGeometry(0.25 * size, 0.25 * size, 0.02 * size, 32);
-      const brim = new THREE.Mesh(brimGeometry, hatMaterial);
-      brim.position.set(0.5 * size, 0.4 * size, 0);
-      hamsterGroup.add(brim);
-
-      const topGeometry = new THREE.CylinderGeometry(0.15 * size, 0.15 * size, 0.2 * size, 32);
-      const top = new THREE.Mesh(topGeometry, hatMaterial);
-      top.position.set(0.5 * size, 0.5 * size, 0);
-      hamsterGroup.add(top);
-    }
-
-    // Random position
-    hamsterGroup.position.set(
-      (Math.random() - 0.5) * 10,
-      0.5 * size,
-      (Math.random() - 0.5) * 10
-    );
-
-    scene.add(hamsterGroup);
-    hamsters.push({
-      mesh: hamsterGroup,
-      velocity: new THREE.Vector3(0, 0, 0),
-      direction: Math.random() * Math.PI * 2
-    });
-  }
-
-  function animate() {
-    requestAnimationFrame(animate);
-
-    hamsters.forEach(hamster => {
-      hamster.direction += (Math.random() - 0.5) * 0.1;
-      hamster.mesh.rotation.y = hamster.direction;
-      
-      const speed = 0.03;
-      hamster.mesh.position.x += Math.cos(hamster.direction) * speed;
-      hamster.mesh.position.z += Math.sin(hamster.direction) * speed;
-
-      if (Math.abs(hamster.mesh.position.x) > 9) {
-        hamster.direction = Math.PI - hamster.direction;
-      }
-      if (Math.abs(hamster.mesh.position.z) > 9) {
-        hamster.direction = -hamster.direction;
-      }
-    });
-
-    renderer.render(scene, camera);
-  }
-
-  document.getElementById('startButton').addEventListener('click', () => {
-    document.getElementById('startScreen').style.display = 'none';
-    document.getElementById('customizePanel').style.display = 'block';
-    bgMusic.play();
-    init();
-    
-    for (let i = 0; i < 3; i++) {
-      createHamster();
-    }
-  });
-
-  document.getElementById('spawnHamster').addEventListener('click', () => {
-    const furColor = new THREE.Color(document.getElementById('furColor').value);
-    const furPattern = document.getElementById('furPattern').value;
-    const earColor = new THREE.Color(document.getElementById('earColor').value);
-    const eyeColor = new THREE.Color(document.getElementById('eyeColor').value);
-    const size = parseFloat(document.getElementById('hamsterSize').value);
-    const earSize = parseFloat(document.getElementById('earSize').value);
-    const tailLength = parseFloat(document.getElementById('tailLength').value);
-    const legLength = parseFloat(document.getElementById('legLength').value);
-    const hasGlasses = document.getElementById('hasGlasses').checked;
-    const hasHat = document.getElementById('hasHat').checked;
-    createHamster({
-      furColor, 
-      furPattern,
-      earColor, 
-      eyeColor,
-      size, 
-      earSize,
-      tailLength,
-      legLength,
-      hasGlasses,
-      hasHat
-    });
-  });
-
-  window.addEventListener('resize', () => {
-    if (camera && renderer) {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    }
-  });
-</script>
+<script type="module" src="hamster.js"></script>
+<script type="module" src="preview.js"></script>
+<script type="module" src="main.js"></script>
 
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
