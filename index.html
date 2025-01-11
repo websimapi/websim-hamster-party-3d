@@ -50,10 +50,49 @@
     padding: 20px;
     border-radius: 10px;
     display: none;
+    min-width: 250px;
   }
 
   .color-picker {
-    margin: 10px 0;
+    margin: 15px 0;
+  }
+
+  .slider-control {
+    margin: 15px 0;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    color: #444;
+    font-weight: bold;
+  }
+
+  input[type="range"] {
+    width: 100%;
+  }
+
+  input[type="color"] {
+    width: 50px;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+  }
+
+  #spawnHamster {
+    width: 100%;
+    padding: 10px;
+    background: #FF69B4;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.3s;
+  }
+
+  #spawnHamster:hover {
+    background: #FF1493;
   }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -71,6 +110,18 @@
     <label>Fur Color:</label>
     <input type="color" id="furColor" value="#B87A3D">
   </div>
+  <div class="color-picker">
+    <label>Ear Color:</label>
+    <input type="color" id="earColor" value="#A06030">
+  </div>
+  <div class="slider-control">
+    <label>Size:</label>
+    <input type="range" id="hamsterSize" min="0.6" max="1.4" step="0.1" value="1">
+  </div>
+  <div class="slider-control">
+    <label>Ear Size:</label>
+    <input type="range" id="earSize" min="0.6" max="1.4" step="0.1" value="1">
+  </div>
   <button id="spawnHamster">Add Hamster!</button>
 </div>
 
@@ -86,14 +137,12 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    // Add lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
     directionalLight.position.set(0, 10, 5);
     scene.add(directionalLight);
 
-    // Create floor
     const floorGeometry = new THREE.PlaneGeometry(20, 20);
     const floorMaterial = new THREE.MeshStandardMaterial({ 
       color: 0x90EE90,
@@ -109,37 +158,75 @@
     animate();
   }
 
-  function createHamster(color = 0xB87A3D) {
+  function createHamster(furColor = 0xB87A3D, earColor = 0xA06030, size = 1, earSize = 1) {
     const hamsterGroup = new THREE.Group();
     
     // Body
-    const bodyGeometry = new THREE.SphereGeometry(0.5, 32, 32);
-    const bodyMaterial = new THREE.MeshStandardMaterial({ color: color });
+    const bodyGeometry = new THREE.SphereGeometry(0.5 * size, 32, 32);
+    const bodyMaterial = new THREE.MeshStandardMaterial({ 
+      color: furColor,
+      roughness: 0.7
+    });
     const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
     hamsterGroup.add(body);
 
     // Head
-    const headGeometry = new THREE.SphereGeometry(0.3, 32, 32);
+    const headGeometry = new THREE.SphereGeometry(0.3 * size, 32, 32);
     const head = new THREE.Mesh(headGeometry, bodyMaterial);
-    head.position.set(0.4, 0.2, 0);
+    head.position.set(0.4 * size, 0.2 * size, 0);
     hamsterGroup.add(head);
 
+    // Ears
+    const earMaterial = new THREE.MeshStandardMaterial({ 
+      color: earColor,
+      roughness: 0.7
+    });
+    const earGeometry = new THREE.CircleGeometry(0.15 * earSize, 32);
+    
+    const leftEar = new THREE.Mesh(earGeometry, earMaterial);
+    leftEar.position.set(0.5 * size, 0.4 * size, 0.15 * size);
+    leftEar.rotation.y = -Math.PI / 4;
+    hamsterGroup.add(leftEar);
+
+    const rightEar = new THREE.Mesh(earGeometry, earMaterial);
+    rightEar.position.set(0.5 * size, 0.4 * size, -0.15 * size);
+    rightEar.rotation.y = Math.PI / 4;
+    hamsterGroup.add(rightEar);
+
     // Eyes
-    const eyeGeometry = new THREE.SphereGeometry(0.05, 16, 16);
+    const eyeGeometry = new THREE.SphereGeometry(0.05 * size, 16, 16);
     const eyeMaterial = new THREE.MeshStandardMaterial({ color: 0x000000 });
     
     const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-    leftEye.position.set(0.5, 0.3, 0.15);
+    leftEye.position.set(0.5 * size, 0.3 * size, 0.15 * size);
     hamsterGroup.add(leftEye);
 
     const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-    rightEye.position.set(0.5, 0.3, -0.15);
+    rightEye.position.set(0.5 * size, 0.3 * size, -0.15 * size);
     hamsterGroup.add(rightEye);
+
+    // Nose
+    const noseGeometry = new THREE.SphereGeometry(0.05 * size, 16, 16);
+    const noseMaterial = new THREE.MeshStandardMaterial({ color: 0xFF69B4 });
+    const nose = new THREE.Mesh(noseGeometry, noseMaterial);
+    nose.position.set(0.6 * size, 0.25 * size, 0);
+    hamsterGroup.add(nose);
+
+    // Whiskers
+    const whiskerMaterial = new THREE.LineBasicMaterial({ color: 0xFFFFFF });
+    for (let i = -1; i <= 1; i++) {
+      const whiskerGeometry = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(0.6 * size, 0.25 * size, 0.1 * i * size),
+        new THREE.Vector3(0.8 * size, 0.25 * size + 0.1 * i, 0.2 * i * size)
+      ]);
+      const whisker = new THREE.Line(whiskerGeometry, whiskerMaterial);
+      hamsterGroup.add(whisker);
+    }
 
     // Random position
     hamsterGroup.position.set(
       (Math.random() - 0.5) * 10,
-      0.5,
+      0.5 * size,
       (Math.random() - 0.5) * 10
     );
 
@@ -154,9 +241,7 @@
   function animate() {
     requestAnimationFrame(animate);
 
-    // Animate hamsters
     hamsters.forEach(hamster => {
-      // Random movement
       hamster.direction += (Math.random() - 0.5) * 0.1;
       hamster.mesh.rotation.y = hamster.direction;
       
@@ -164,7 +249,6 @@
       hamster.mesh.position.x += Math.cos(hamster.direction) * speed;
       hamster.mesh.position.z += Math.sin(hamster.direction) * speed;
 
-      // Keep hamsters within bounds
       if (Math.abs(hamster.mesh.position.x) > 9) {
         hamster.direction = Math.PI - hamster.direction;
       }
@@ -176,22 +260,23 @@
     renderer.render(scene, camera);
   }
 
-  // Event Listeners
   document.getElementById('startButton').addEventListener('click', () => {
     document.getElementById('startScreen').style.display = 'none';
     document.getElementById('customizePanel').style.display = 'block';
     bgMusic.play();
     init();
     
-    // Add some initial hamsters
     for (let i = 0; i < 3; i++) {
       createHamster();
     }
   });
 
   document.getElementById('spawnHamster').addEventListener('click', () => {
-    const color = new THREE.Color(document.getElementById('furColor').value);
-    createHamster(color);
+    const furColor = new THREE.Color(document.getElementById('furColor').value);
+    const earColor = new THREE.Color(document.getElementById('earColor').value);
+    const size = parseFloat(document.getElementById('hamsterSize').value);
+    const earSize = parseFloat(document.getElementById('earSize').value);
+    createHamster(furColor, earColor, size, earSize);
   });
 
   window.addEventListener('resize', () => {
