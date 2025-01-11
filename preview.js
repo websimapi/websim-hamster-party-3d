@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { createHamster } from './hamster.js';
 
 export class HamsterPreview {
   constructor(containerId) {
