@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { createHamster } from './hamster.js';
 
 export class HamsterPreview {
   constructor(containerId) {
@@ -38,7 +39,10 @@ export class HamsterPreview {
     if (this.hamsterPreview) {
       this.scene.remove(this.hamsterPreview.group);
     }
+    
+    // Create new hamster with parameters and center it
     this.hamsterPreview = createHamster(params);
+    this.hamsterPreview.group.position.set(0, 0, 0); // Center the preview hamster
     this.scene.add(this.hamsterPreview.group);
   }
 
